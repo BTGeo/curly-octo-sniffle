@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine? 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            animation: float 10s infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #e91e63;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .emoji {
+            font-size: 80px;
+            margin: 20px 0;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .question {
+            font-size: 2em;
+            color: #c50925;
+            margin: 30px 0;
+            font-weight: 500;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            position: relative;
+            height: 70px;
+        }
+
+        button {
+            font-size: 1.2em;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #yesBtn {
+            background: #c866c6;
+            color: white;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        #noBtn {
+            background: #485058;
+            color: white;
+        }
+
+        .success {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .success h2 {
+            color: #e91e63;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .success .emoji {
+            font-size: 100px;
+        }
+
+        .success p {
+            font-size: 1.3em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .bouncing-image {
+             position: fixed;
+             width: 150px;
+             height: 150px;
+             object-fit: cover;
+             border-radius: 50%;
+             border: 5px solid white;
+             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+             z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+
+     <img src="https://i.imgur.com/R4h9na5.jpeg" alt="Bouncing" class="bouncing-image" id="bouncingImage">
+    
+    <div class="container">
+        <div id="question-section">
+            <h1>To Uggs 💕</h1>
+            <div class="emoji">🌹</div>
+            <p class="question">Hayati, Will you be my Valentine?❤️</p>
+            <div class="buttons">
+                <button id="yesBtn">Yes! 💖</button>
+                <button id="noBtn">No</button>
+            </div>
+        </div>
+
+        <div class="success" id="success-section">
+            <div class="emoji">😻😻</div>
+            <h2>She said YES! 💕</h2>
+            <p> </p>
+            <div class="emoji">❤️</div>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const questionSection = document.getElementById('question-section');
+        const successSection = document.getElementById('success-section');
+
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.textContent = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            document.getElementById('hearts').appendChild(heart);
+
+            setTimeout(() => heart.remove(), 10000);
+        }
+
+        setInterval(createHeart, 300);
+
+        //Make the picture bounce around
+       const bouncingImg = document.getElementById('bouncingImage');
+       let x = Math.random() * (window.innerWidth - 150);
+       let y = Math.random() * (window.innerHeight - 150);
+       let dx = 2 + Math.random() * 2;
+       let dy = 2 + Math.random() * 2;
+
+       function animateImage() {
+       x += dx;
+       y += dy;
+
+    // Bounce off edges
+    if (x + 150 >= window.innerWidth || x <= 0) {
+        dx = -dx;
+    }
+    if (y + 150 >= window.innerHeight || y <= 0) {
+        dy = -dy;
+    }
+
+    bouncingImg.style.left = x + 'px';
+    bouncingImg.style.top = y + 'px';
+
+    requestAnimationFrame(animateImage);
+}
+
+animateImage();
+
+        // Move "No" button away from cursor
+        noBtn.addEventListener('mouseover', function() {
+            const container = document.querySelector('.buttons');
+            const containerRect = container.getBoundingClientRect();
+            
+            
+            noBtn.style.position = 'absolute';
+            
+            const maxX = containerRect.width - noBtn.offsetWidth;
+            const maxY = containerRect.height - noBtn.offsetHeight;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        });
+
+        // For phone
+        noBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            
+            // Make the button absolutely positioned when it needs to move
+            noBtn.style.position = 'absolute';
+            
+            const container = document.querySelector('.buttons');
+            const containerRect = container.getBoundingClientRect();
+            
+            const maxX = containerRect.width - noBtn.offsetWidth;
+            const maxY = containerRect.height - noBtn.offsetHeight;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        });
+
+        // Yes button click handler
+        yesBtn.addEventListener('click', function() {
+            questionSection.style.display = 'none';
+            successSection.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
